@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  user: one
+  due_at: 2019-11-08 15:15:10
+  action: MyString
+
+two:
+  name: MyString
+  user: two
+  due_at: 2019-11-08 15:15:10
+  action: MyString
