@@ -4,7 +4,11 @@ module Api
             render json: Company.all, status: :ok
         end
         def show
-            render json: Company.find(params[:id]), status: :ok
+            if Company.exists?(params[:id])
+                render json: Company.find(params[:id]), status: :ok
+            else
+                render status: :not_found
+            end
         end
         def create
             company = Company.new(params.permit(:name))
@@ -14,12 +18,17 @@ module Api
             end
         end
         def update
-            company = Company.find(params[:id])
-            if company.update_attributes(params.permit(:name))
-                render json: company, status: :ok
+            if Company.exists?(params[:id])
+                company = Company.find(params[:id])
+                if company.update_attributes(params.permit(:name))
+                    render json: company, status: :ok
+                else
+                    render status: :unprocessable_entity #?
+                end
             else
-                render status: :unprocessable_entity #?
+                render status: :not_found
             end
+
         end
         def destroy
             company = Company.find(params[:id])
@@ -28,8 +37,6 @@ module Api
             else
                 render status: :unprocessable_entity #?
             end
-
         end
-        
     end
 end

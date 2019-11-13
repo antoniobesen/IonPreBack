@@ -5,7 +5,11 @@ module Api
         end
 
         def show
-            render json: User.find(params[:id]), status: :ok
+            if User.exists?(params[:id])
+                render json: User.find(params[:id]), status: :ok
+            else
+                render status: :not_found
+            end
         end
 
         def create
@@ -16,11 +20,15 @@ module Api
             end
         end
         def update
-            user = User.find(params[:id])
-            if user.update_attributes(params.permit(:email))
-                render json: user, status: :ok
+            if User.exists?(params[:id])
+                user = User.find(params[:id])
+                if user.update_attributes(params.permit(:email))
+                    render json: user, status: :ok
+                else
+                    render status: :unprocessable_entity #?
+                end
             else
-                render status: :unprocessable_entity #?
+                render status: :not_found
             end
         end
         def destroy
